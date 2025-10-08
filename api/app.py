@@ -7,7 +7,10 @@ from api.services.extract import Extract
 
 app = Flask(__name__)
 
-CORS(app, resources={r"/api/*": {"origins": "*"}})
+CORS(app, resources={r"/api/*": {
+    "origins": ["https://plsi-tms-monitoring.vercel.app"], 
+    "methods": ["POST"]
+}})
 api = Api(app)
 load_dotenv()
 
