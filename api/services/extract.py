@@ -13,7 +13,7 @@ class Extract(Resource):
         client = genai.Client(api_key=os.getenv('GEMINI_API_KEY'))
 
         if "file" not in request.files:
-                return {"error": "Missing file in request"}, 400
+            return {"error": "Missing file in request"}, 400
         
         file = request.files["file"]
         if file.filename == "":
@@ -36,7 +36,17 @@ class Extract(Resource):
 
             try:
                 data = json.loads(cleaned_text)
+                
+                # Check if Gemini returned the error format
+                if "error" in data and data.get("error") == "Invalid document format":
+                    return {"error": "Invalid document format"}, 400
+                
+                # Validate the expected structure
+                if "employee" not in data or "logs" not in data:
+                    return {"error": "Invalid document format"}, 400
+                
                 return jsonify(data)
+                
             except json.JSONDecodeError:
                 return {
                     "error": "Invalid JSON from Gemini",

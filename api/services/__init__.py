@@ -12,7 +12,7 @@ PROMPT = """
             - "employee": { "id": "<EmployeeID>", "name": "<EmployeeName>" }
             - "logs": an array of objects with keys: Date, Day, Shift, TimeIn, BreakOut, BreakIn, TimeOut, Remarks.
         3. If the PDF does NOT match this format, return this exact JSON response:
-        {"error": "Invalid document format. Expected a DAILY LOGS attendance sheet with profiling footer."}
+        {"error": "Invalid document format"}
 
         Do not include any explanations, Markdown formatting, or text outside of the JSON response.
 
