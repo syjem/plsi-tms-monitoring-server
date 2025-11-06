@@ -1,19 +1,35 @@
 PROMPT = """
-        You are given a PDF file.
-        The expected format is a DAILY LOGS attendance sheet, containing:
-        1. A table with these columns: Date, Day, Shift, In, Break Out, Break In, Out, Remarks.
-        2. A footer line below the table containing the employee ID and name in the format:
-        "<EmployeeID> <EmployeeName>"
+        You are given a PDF file that represents a DAILY LOGS attendance sheet.
 
-        Instructions:
-        1. First, check if the PDF contains BOTH the expected table structure AND the footer profiling line with employee ID and name.
-        2. If BOTH are present, extract the data:
-        - Return the result as a single JSON object with two keys:
-            - "employee": { "id": "<EmployeeID>", "name": "<EmployeeName>" }
-            - "logs": an array of objects with keys: Date, Day, Shift, TimeIn, BreakOut, BreakIn, TimeOut, Remarks.
-        3. If the PDF does NOT match this format, return this exact JSON response:
+        Expected structure:
+        1. A main table with these exact columns, in this order:
+        ["Date", "Shift", "In", "Break Out", "Break In", "Out", "Remarks"]
+        - The "Date" cell must contain a date and a day in the format "<YYYY-MM-DD> <Day>" (e.g., "2025-10-09 THU").
+
+        Extraction and validation instructions:
+        1. Check if the expected table structure exist.
+        2. If BOTH exist:
+        - Extract all data rows from the table.
+        - Each row should become one JSON object with the following keys:
+            {
+            "Date": "<YYYY-MM-DD>",
+            "Day": "<Day>",
+            "Shift": "<Shift>",
+            "TimeIn": "<In>",
+            "BreakOut": "<Break Out>",
+            "BreakIn": "<Break In>",
+            "TimeOut": "<Out>",
+            "Remarks": "<Remarks>"
+            }
+        - Combine all objects into an array named "logs".
+        - Return the entire result as one JSON object in this exact format:
+            {"logs": [ ... ]}
+
+        3. If the document does NOT contain both the valid table structure and the footer profiling line, return exactly:
         {"error": "Invalid document format"}
 
-        Do not include any explanations, Markdown formatting, or text outside of the JSON response.
-
+        Formatting rules:
+        - Do NOT include any explanations, Markdown, or extra text.
+        - The response must be valid JSON only.
+ 
     """

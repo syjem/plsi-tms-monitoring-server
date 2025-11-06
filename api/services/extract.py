@@ -42,7 +42,7 @@ class Extract(Resource):
                     return {"error": "Invalid document format"}, 400
                 
                 # Validate the expected structure
-                if "employee" not in data or "logs" not in data:
+                if "logs" not in data:
                     return {"error": "Invalid document format"}, 400
                 
                 return jsonify(data)
