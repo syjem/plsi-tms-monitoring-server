@@ -19,6 +19,11 @@ html_template = """
                 padding: 1rem;
                 line-height: 1.6;
             }
+            h1 {
+                color: #333;
+                font-size: 20px;
+                margin-bottom: 2rem;
+            }
             div.container {
                 background-color: #f9f9f9;
                 border: 1px solid #ddd;
@@ -45,6 +50,7 @@ html_template = """
         </style>
     </head>
     <body>
+        <h1>The API exposes a single endpoint: </h1>
         <div class="container">
             <strong>POST</strong>
             <code>/api/extract</code>
