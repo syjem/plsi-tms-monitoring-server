@@ -6,6 +6,7 @@ from flask import jsonify, request
 from flask_restful import Resource
 from google import genai
 from google.genai import types
+from google.genai.errors import ClientError, ServerError
 from api.services import PROMPT
 
 class Extract(Resource):
@@ -60,6 +61,18 @@ class Extract(Resource):
             
             # Return successful JSON response
             return jsonify(data)
+        
+        except ClientError as e:
+            if e.code == 429:
+                return {"error": "Rate limit exceeded. Slow down."}, 429
+            else:
+                return {"error": f"Client error {e.code}: {e.message}"}, e.code
+        
+        except ServerError as e:
+            if e.code == 503:
+                return {"error": "Gemini model is currently overloaded. Please try again later."}, 503
+            else:
+                return {"error": f"A Gemini server error occurred: {e.code} - {e.message}"}, e.code
                 
         except Exception as e:
             return {"error": str(e)}, 500
