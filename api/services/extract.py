@@ -64,15 +64,15 @@ class Extract(Resource):
         
         except ClientError as e:
             if e.code == 429:
-                return {"error": "Rate limit exceeded. Slow down."}, 429
+                return {"error": "Rate limit exceeded. Please try again later."}, 429
             else:
-                return {"error": f"Client error {e.code}: {e.message}"}, e.code
+                return {"error": f"Gemini client error: {e.code}: {e.message}"}, e.code
         
         except ServerError as e:
             if e.code == 503:
-                return {"error": "Gemini model is currently overloaded. Please try again later."}, 503
+                return {"error": "Gemini is currently overloaded. Please try again later."}, 503
             else:
-                return {"error": f"A Gemini server error occurred: {e.code} - {e.message}"}, e.code
+                return {"error": f"Gemini server error: {e.code} - {e.message}"}, e.code
                 
         except Exception as e:
             return {"error": str(e)}, 500
